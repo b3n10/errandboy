@@ -24,4 +24,4 @@ var calculate = function() {
 };
 
 dist.addEventListener('input', calculate)
-calc.addEventListener('click', calculate);
+// calc.addEventListener('click', calculate);
