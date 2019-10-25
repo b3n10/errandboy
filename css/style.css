@@ -17,7 +17,7 @@
     display: none;
     font-size: 20px;
 }
-input, button {
+input {
     width: 100%;
 }
 input {
@@ -26,9 +26,25 @@ input {
     padding: 10px;
 }
 button {
-    border-radius: 2px;
-    background: #99CCFF;
+    border-radius: 5px;
+    background: #998f8f38;
+    border: none;
+    color: #010101;
+    line-height: 2;
+}
+
+.stops {
+    width: 200px;
+    margin: 0 auto;
+}
+.stops input {
+    width: 22%;
+    background: #fff;
     border: none;
     color: #000;
-    line-height: 1.8;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+}
+.stops button {
+    width: 11%;
 }
