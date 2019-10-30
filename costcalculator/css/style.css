@@ -54,9 +54,26 @@ button {
     display: none;
 }
 
-button#btn_copy {
+button.btn_copy {
     display: block;
     padding: 5px;
     width: 100px;
     margin: 0 auto;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    background-color: #ccc;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 3px #999;
+}
+button.btn_copy:hover {
+    background-color: #c1c1c1;
+    color: #000;
+}
+button.btn_copy:active {
+  background-color: #c1c1c1;
+  box-shadow: 0 3px #666;
+  transform: translateY(4px);
 }
