@@ -62,7 +62,7 @@ button.btn_copy {
     text-align: center;
     cursor: pointer;
     outline: none;
-    color: #fff;
+    color: #000;
     background-color: #ccc;
     border: none;
     border-radius: 15px;
@@ -70,7 +70,7 @@ button.btn_copy {
 }
 button.btn_copy:hover {
     background-color: #c1c1c1;
-    color: #000;
+    color: #fff;
 }
 button.btn_copy:active {
   background-color: #c1c1c1;
