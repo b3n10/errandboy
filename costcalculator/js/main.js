@@ -66,7 +66,7 @@ var copy_result = function() {
     var child_count = 0;
 
     resc.forEach(function(child) {
-        if (child.innerHTML != "" && child.style.display != 'none') {
+        if (child.innerHTML != "" && window.getComputedStyle(child).display != 'none') {
             txt_res += " " + child.innerHTML.trim();
             child_count++;
         }
