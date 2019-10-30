@@ -36,6 +36,10 @@ var calculate = function() {
             rem_cost.innerHTML = "(" + remkm.toFixed(1)  + "x15) " + remcost.toFixed(2);
             tot_cost.innerHTML = t + "php";
         }
+    } else {
+        rem_cost.innerHTML = "0";
+        stop_cost.innerHTML = "(" + stop.value + "x20) 0";
+        tot_cost.innerHTML = "0";
     }
 };
 
