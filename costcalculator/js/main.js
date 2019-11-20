@@ -30,7 +30,7 @@ var calculate = function() {
         if (d <= 3) {
             rem_cost.innerHTML = "0";
             stop_cost.innerHTML = "(" + stop.value + "x20) " + s;
-            tot_cost.innerHTML = t + "php";
+            tot_cost.innerHTML = "55php";
         } else {
             stop_cost.innerHTML = "(" + stop.value + "x20) " + s;
             rem_cost.innerHTML = "(" + remkm.toFixed(1)  + "x15) " + remcost.toFixed(2);
