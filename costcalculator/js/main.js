@@ -9,6 +9,8 @@ var sp = document.getElementById('stop_plus');
 var sm = document.getElementById('stop_minus');
 var st_cost = document.getElementById('stop_cost');
 
+var spc = document.getElementById('span_cost');
+
 var result = document.getElementsByClassName('result')[0];
 var resc = Array.from(result.children);
 
@@ -16,12 +18,27 @@ var hd_res = document.getElementById('hd_res');
 
 var cp = document.getElementById('btn_copy');
 
+var dt = new Date();
+var n = undefined;
+
+window.onload = function() {
+    n = dt.getHours();
+    spc.innerHTML = (n >= 21 || n <= 5) ? "65" : "55";
+};
+
 var calculate = function() {
     d = Number(dist.value);
 
+    n = dt.getHours();
+
+    var rem = (n >= 21 || n <= 5) ? 20 : 15;
+    console.log(rem);
+    var cost = (n >= 21 || n <= 5) ? 65 : 55;
+    console.log(cost);
+
     var remkm = d - 3;
-    var remcost = remkm * 15;
-    var total = remcost + 55;
+    var remcost = remkm * rem;
+    var total = remcost + cost;
 
     s = stop.value * 20;
     t = Number(s) + Number(total.toFixed(2));
@@ -30,10 +47,10 @@ var calculate = function() {
         if (d <= 3) {
             rem_cost.innerHTML = "0";
             stop_cost.innerHTML = "(" + stop.value + "x20) " + s;
-            tot_cost.innerHTML = "55php";
+            tot_cost.innerHTML = `${cost}php`;
         } else {
             stop_cost.innerHTML = "(" + stop.value + "x20) " + s;
-            rem_cost.innerHTML = "(" + remkm.toFixed(1)  + "x15) " + remcost.toFixed(2);
+            rem_cost.innerHTML = "(" + remkm.toFixed(1)  + `x${rem}) ` + remcost.toFixed(2);
             tot_cost.innerHTML = t + "php";
         }
     } else {
