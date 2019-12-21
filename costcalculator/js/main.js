@@ -86,6 +86,8 @@ var copy_result = function() {
     var prev_node = "";
     var child_count = 0;
 
+    txt_res = dist.value + "km distance\n\n";
+
     resc.forEach(function(child) {
         if (child.innerHTML != "" && window.getComputedStyle(child).display != 'none') {
             txt_res += " " + child.innerHTML.trim();
