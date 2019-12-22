@@ -2,7 +2,9 @@ var dist = document.getElementById('distance');
 var calc = document.getElementById('calculate');
 var rem_dist = document.getElementById('remaining_distance');
 var rem_cost = document.getElementById('remaining_cost');
-var tot_cost = document.getElementById('total_cost');
+var errand_fee = document.getElementById('errand_fee');
+var holiday_surcharge = document.getElementById('holiday_surcharge');
+var total_cost = document.getElementById('total_cost');
 
 var stop = document.getElementById('stop');
 var sp = document.getElementById('stop_plus');
@@ -39,6 +41,7 @@ var calculate = function() {
     var remkm = d - 3;
     var remcost = remkm * rem;
     var total = remcost + cost;
+    var h_cost = (total * 0.50).toFixed(0);
 
     s = stop.value * 20;
     t = Number(s) + Number(total.toFixed(2));
@@ -47,16 +50,22 @@ var calculate = function() {
         if (d <= 3) {
             rem_cost.innerHTML = "0";
             stop_cost.innerHTML = "(" + stop.value + "x20) " + s;
-            tot_cost.innerHTML = `${cost}php`;
+            errand_fee.innerHTML = `${cost}php`;
+            holiday_surcharge.innerHTML = h_cost;
+            total_cost.innerHTML = parseInt(t) + parseInt(h_cost);
         } else {
             stop_cost.innerHTML = "(" + stop.value + "x20) " + s;
             rem_cost.innerHTML = "(" + remkm.toFixed(1)  + `x${rem}) ` + remcost.toFixed(2);
-            tot_cost.innerHTML = t + "php";
+            errand_fee.innerHTML = `${t}php`;
+            holiday_surcharge.innerHTML = h_cost;
+            total_cost.innerHTML = parseInt(t) + parseInt(h_cost);
         }
     } else {
         rem_cost.innerHTML = "0";
         stop_cost.innerHTML = "(" + stop.value + "x20) 0";
-        tot_cost.innerHTML = "0";
+        errand_fee.innerHTML = "0";
+        holiday_surcharge.innerHTML = "0";
+        total_cost.innerHTML = "0";
     }
 };
 
@@ -90,7 +99,7 @@ var copy_result = function() {
 
     resc.forEach(function(child) {
         if (child.innerHTML != "" && window.getComputedStyle(child).display != 'none') {
-            txt_res += " " + child.innerHTML.trim();
+            txt_res += child.innerHTML.trim() + " ";
             child_count++;
         }
 
@@ -99,6 +108,8 @@ var copy_result = function() {
             child_count = 0;
         }
     });
+
+    txt_res += "\n*Surcharge fee applies on every errand starting Dec 21 to Jan 2 only."
 
     /* only way to copy this text is to paste in text element */
     var d = document.createElement("textarea");
