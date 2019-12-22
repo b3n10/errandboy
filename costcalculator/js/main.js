@@ -34,14 +34,17 @@ var calculate = function() {
     n = dt.getHours();
 
     var rem = (n >= 21 || n <= 5) ? 20 : 15;
-    console.log(rem);
+    // console.log(rem);
     var cost = (n >= 21 || n <= 5) ? 65 : 55;
-    console.log(cost);
+    // console.log(cost);
 
     var remkm = d - 3;
-    var remcost = remkm * rem;
+    console.log(`remkm: ${remkm}`);
+    var remcost = (remkm <= 0) ? 0 : (remkm * rem);
+    console.log(`remcost: ${remcost}`);
     var total = remcost + cost;
-    var h_cost = (total * 0.50).toFixed(0);
+    console.log(`total: ${total}`);
+    var h_cost = (total * 0.50).toFixed(1);
 
     s = stop.value * 20;
     t = Number(s) + Number(total.toFixed(2));
