@@ -46,22 +46,22 @@ var calculate = function() {
     console.log(`total: ${total}`);
     var h_cost = (total * 0.50).toFixed(1);
 
-    s = stop.value * 20;
-    t = Number(s) + Number(total.toFixed(2));
+    var s = stop.value * 20;
+    var t = Number(s) + Number(total.toFixed(2));
 
     if (d) {
         if (d <= 3) {
             rem_cost.innerHTML = "0";
             stop_cost.innerHTML = "(" + stop.value + "x20) " + s;
-            errand_fee.innerHTML = `${cost}php`;
+            errand_fee.innerHTML = `${cost}`;
             holiday_surcharge.innerHTML = h_cost;
-            total_cost.innerHTML = parseInt(cost) + parseInt(h_cost);
+            total_cost.innerHTML = `${(parseInt(cost) + parseInt(h_cost))}php`;
         } else {
             stop_cost.innerHTML = "(" + stop.value + "x20) " + s;
             rem_cost.innerHTML = "(" + remkm.toFixed(1)  + `x${rem}) ` + remcost.toFixed(2);
-            errand_fee.innerHTML = `${t}php`;
+            errand_fee.innerHTML = `${t}`;
             holiday_surcharge.innerHTML = h_cost;
-            total_cost.innerHTML = parseInt(t) + parseInt(h_cost);
+            total_cost.innerHTML = `${(parseInt(t) + parseInt(h_cost))}php`;
         }
     } else {
         rem_cost.innerHTML = "0";
