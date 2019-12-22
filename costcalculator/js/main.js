@@ -52,7 +52,7 @@ var calculate = function() {
             stop_cost.innerHTML = "(" + stop.value + "x20) " + s;
             errand_fee.innerHTML = `${cost}php`;
             holiday_surcharge.innerHTML = h_cost;
-            total_cost.innerHTML = parseInt(t) + parseInt(h_cost);
+            total_cost.innerHTML = parseInt(cost) + parseInt(h_cost);
         } else {
             stop_cost.innerHTML = "(" + stop.value + "x20) " + s;
             rem_cost.innerHTML = "(" + remkm.toFixed(1)  + `x${rem}) ` + remcost.toFixed(2);
