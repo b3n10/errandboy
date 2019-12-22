@@ -109,7 +109,7 @@ var copy_result = function() {
         }
     });
 
-    txt_res += "\n*Surcharge fee applies on every errand starting Dec 21 to Jan 2 only."
+    // txt_res += "\n*Surcharge fee applies on every errand starting Dec 21 to Jan 2 only."
 
     /* only way to copy this text is to paste in text element */
     var d = document.createElement("textarea");
