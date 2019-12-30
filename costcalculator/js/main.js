@@ -1,3 +1,4 @@
+var cb_nighttime = document.getElementById('cb_nighttime');
 var dist = document.getElementById('distance');
 var calc = document.getElementById('calculate');
 var rem_dist = document.getElementById('remaining_distance');
@@ -23,9 +24,16 @@ var cp = document.getElementById('btn_copy');
 var dt = new Date();
 var n = undefined;
 
+// initial value (daytime)
+var rem = 15;
+var cost = 55;
+
+// nighttime flag
+var nighttime = false;
+
 window.onload = function() {
-    n = dt.getHours();
-    spc.innerHTML = (n >= 21 || n <= 5) ? "65" : "55";
+    // n = dt.getHours();
+    spc.innerHTML = "55";
 };
 
 var calculate = function() {
@@ -33,9 +41,9 @@ var calculate = function() {
 
     n = dt.getHours();
 
-    var rem = (n >= 21 || n <= 5) ? 20 : 15;
+    // var rem = (n >= 21 || n <= 5) ? 20 : 15;
     // console.log(rem);
-    var cost = (n >= 21 || n <= 5) ? 65 : 55;
+    // var cost = (n >= 21 || n <= 5) ? 65 : 55;
     // console.log(cost);
 
     var remkm = d - 3;
@@ -122,6 +130,21 @@ var copy_result = function() {
     document.execCommand("copy");
     d.remove();
     console.log(txt_res);
+};
+
+cb_nighttime.onclick = function() {
+    if (! nighttime) {
+        spc.innerHTML = "65";
+        rem = 20;
+        cost = 65;
+        nighttime = true;
+    } else {
+        spc.innerHTML = "55";
+        rem = 15;
+        cost = 55;
+        nighttime = false;
+    }
+    calculate();
 };
 
 dist.addEventListener('input', calculate)
