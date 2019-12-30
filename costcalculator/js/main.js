@@ -39,12 +39,12 @@ var calculate = function() {
     // console.log(cost);
 
     var remkm = d - 3;
-    console.log(`remkm: ${remkm}`);
+    // console.log(`remkm: ${remkm}`);
     var remcost = (remkm <= 0) ? 0 : (remkm * rem);
-    console.log(`remcost: ${remcost}`);
+    // console.log(`remcost: ${remcost}`);
     var total = remcost + cost;
-    console.log(`total: ${total}`);
-    var h_cost = (total * 0.50).toFixed(1);
+    // console.log(`total: ${total}`);
+    var h_cost = (total * 0.50).toFixed(2);
 
     var s = stop.value * 20;
     var t = Number(s) + Number(total.toFixed(2));
@@ -54,21 +54,21 @@ var calculate = function() {
             rem_cost.innerHTML = "0";
             stop_cost.innerHTML = "(" + stop.value + "x20) " + s;
             errand_fee.innerHTML = `${cost}`;
-            // holiday_surcharge.innerHTML = h_cost;
-            // total_cost.innerHTML = `${(parseInt(cost) + parseInt(h_cost))}php`;
+            holiday_surcharge.innerHTML = h_cost;
+            total_cost.innerHTML = `₱${(parseInt(cost) + parseInt(h_cost))}`;
         } else {
             stop_cost.innerHTML = "(" + stop.value + "x20) " + s;
-            rem_cost.innerHTML = "(" + remkm.toFixed(1)  + `x${rem}) ` + remcost.toFixed(2);
+            rem_cost.innerHTML = "(" + remkm.toFixed(2)  + `x${rem}) ` + remcost.toFixed(2);
             errand_fee.innerHTML = `${t}`;
-            // holiday_surcharge.innerHTML = h_cost;
-            // total_cost.innerHTML = `${(parseInt(t) + parseInt(h_cost))}php`;
+            holiday_surcharge.innerHTML = h_cost;
+            total_cost.innerHTML = `₱${(parseFloat(t) + parseFloat(h_cost))}`;
         }
     } else {
         rem_cost.innerHTML = "0";
         stop_cost.innerHTML = "(" + stop.value + "x20) 0";
         errand_fee.innerHTML = "0";
-        // holiday_surcharge.innerHTML = "0";
-        // total_cost.innerHTML = "0";
+        holiday_surcharge.innerHTML = "0";
+        total_cost.innerHTML = "0";
     }
 };
 
