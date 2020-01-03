@@ -62,21 +62,21 @@ var calculate = function() {
             rem_cost.innerHTML = "0";
             stop_cost.innerHTML = "(" + stop.value + "x20) " + s;
             errand_fee.innerHTML = `${cost}`;
-            holiday_surcharge.innerHTML = h_cost;
-            total_cost.innerHTML = `₱${(parseInt(cost) + parseInt(h_cost))}`;
+            // holiday_surcharge.innerHTML = h_cost;
+            // total_cost.innerHTML = `₱${(parseInt(cost) + parseInt(h_cost))}`;
         } else {
             stop_cost.innerHTML = "(" + stop.value + "x20) " + s;
             rem_cost.innerHTML = "(" + remkm.toFixed(2)  + `x${rem}) ` + remcost.toFixed(2);
             errand_fee.innerHTML = `${t}`;
-            holiday_surcharge.innerHTML = h_cost;
-            total_cost.innerHTML = `₱${(parseFloat(t) + parseFloat(h_cost))}`;
+            // holiday_surcharge.innerHTML = h_cost;
+            // total_cost.innerHTML = `₱${(parseFloat(t) + parseFloat(h_cost))}`;
         }
     } else {
         rem_cost.innerHTML = "0";
         stop_cost.innerHTML = "(" + stop.value + "x20) 0";
         errand_fee.innerHTML = "0";
-        holiday_surcharge.innerHTML = "0";
-        total_cost.innerHTML = "0";
+        // holiday_surcharge.innerHTML = "0";
+        // total_cost.innerHTML = "0";
     }
 };
 
