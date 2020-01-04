@@ -21,7 +21,8 @@ const brs = () => {
         port: 8080,
         ui: {
             port: 8081
-        }
+        },
+        logLevel: "silent"
     })
 }
 
@@ -34,6 +35,7 @@ exports.mywatch = () => {
     brs()
     watch('src/**/*.js', series(transpile, brel))
     watch('**/*.html', brel)
+    watch('css/*.css', brel)
 }
 
 exports.default = () => {
