@@ -14,12 +14,17 @@
     padding: 2px 0;
 }
 
+.row #tx_distance {
+    text-align: right;
+}
+
 .result {
     font-size: 16px;
 }
 
 div.estimates {
     padding: 5px;
+    width: 90%;
 }
 
 div.estimates label {
@@ -29,12 +34,12 @@ div.estimates label {
 div.estimates label:first-child {
     font-weight: 900;
     text-align: left;
-    width: 50%;
+    width: 75%;
 }
 
 div.estimates label:last-child {
-    text-align: center;
-    width: 50%;
+    text-align: right;
+    width: 25%;
 }
 
 button.btn_copy {
