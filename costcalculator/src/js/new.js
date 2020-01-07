@@ -1,13 +1,4 @@
-/* main array */
-
-const fields = [
-    { label: 'First 3km:', value: '55.00' },
-    { label: 'Remaining KM:', addin: '', value: 0 },
-    { label: 'Errand Fee:', value: '55.00' },
-]
-
 /* dom elements */
-
 const cb_nighttime = document.getElementById('cb_nighttime')
 const cb_holiday = document.getElementById('cb_holiday')
 const tx_distance = document.getElementById('tx_distance')
@@ -18,42 +9,45 @@ const result = document.getElementsByClassName('result')[0]
 const bt_copy = document.getElementById('bt_copy')
 
 /* default values */
-
-const day_fee = '55.00', day_remfee = '15'
-const night_fee = '65.00', night_remfee = '20'
-let rem_fee = day_remfee
+const day_fee = '55.0', day_remfee = '15'
+const night_fee = '65.0', night_remfee = '20'
+let errand_fee = day_fee, rem_fee = day_remfee
 const stop_fee = 20
+let stops = Number(tx_stop.value)
+
+/* main array */
+const fields = [
+    { label: 'First 3km:', value: day_fee },
+    { label: 'Remaining KM:', value: 0 },
+    { label: 'Errand Fee:', value: errand_fee },
+]
+
 
 /* functions */
 
 const stopover = () => {
-    let stops = Number(tx_stop.value)
+    if (event.currentTarget === bt_stopplus)
+        tx_stop.value = stops = stops + 1
+    else
+        if (stops > 0) tx_stop.value = stops = stops - 1
 
-    if (event.currentTarget === bt_stopminus || stops === 1) {
-        tx_stop.value = stops = 0
-        fields.splice(3, 1)
-    } else {
-        if (event.currentTarget === bt_stopplus)
-            tx_stop.value = stops = stops + 1
-        else
-            if (stops > 0)
-                tx_stop.value = stops = stops - 1
+    fields.splice(
+        3,
+        (fields.filter( obj => obj.label.includes('Stop'))) ? 1 : 0,
+        { label: 'Stop Over:', value: (stops * stop_fee).toFixed(1) }
+    )
 
-        fields.splice(
-            3,
-            (fields.findIndex( obj => obj.label.includes('Stop') ) > 0) ? 1 : 0,
-            { label: 'Stop Over:', value: stops * stop_fee}
-        )
-    }
+    if (fields.filter(obj => obj.label.includes('Total')).length === 0) fields.push({label: 'Total Delivery Cost:', value: 0})
 
-    generate_fields()
+    if (stops === 0) return fields.splice(3, 1) && calculate()
+
+    calculate()
 }
 
 const generate_fields = () => {
     // remove all fields first if any
-    while (result.firstChild) {
+    while (result.firstChild)
         result.removeChild(result.firstChild)
-    }
 
     fields.forEach( obj => {
         const new_div = document.createElement('div')
@@ -72,24 +66,36 @@ const generate_fields = () => {
 
 const calculate = () => {
     const dist = Number(tx_distance.value)
-    let initial = 0, rem_cost = 0, errand_fee = 0
+    let initial = 0, rem_cost = 0, computed_fee
+    let fld_first = fields.filter(obj => obj.label.includes('First'))[0],
+        fld_rem = fields.filter(obj => obj.label.includes('Remaining'))[0],
+        fld_errand = fields.filter(obj => obj.label.includes('Errand'))[0],
+        fld_stop = fields.filter(obj => obj.label.includes('Stop'))[0],
+        fld_total = fields.filter(obj => obj.label.includes('Total'))[0]
 
     if (dist > 3) {
-        initial = Number(fields.filter(obj => obj.label.includes('First'))[0].value)
+        initial = Number(fld_first.value)
         // console.log(initial)
 
-        fields.filter(obj => obj.label.includes('Remaining'))[0].label = `Remaining KM (${(dist - 3).toFixed(1)}x${rem_fee}):`
-        rem_cost = parseFloat((dist - 3) * Number(rem_fee)).toFixed(2)
-        fields.filter(obj => obj.label.includes('Remaining'))[0].value = rem_cost
+        fld_rem.label = `Remaining KM (${(dist - 3).toFixed(1)}x${rem_fee}):`
+        rem_cost = parseFloat((dist - 3) * Number(rem_fee)).toFixed(1)
+        fld_rem.value = rem_cost
         // console.log(rem_cost)
 
-        errand_fee = (Number(initial) + Number(rem_cost)).toFixed(2)
-        fields.filter(obj => obj.label.includes('Errand'))[0].value = errand_fee
+        computed_fee = (Number(initial) + Number(rem_cost)).toFixed(1)
+        fld_errand.value = computed_fee
         // console.log(errand_fee)
     } else {
-        fields.filter(obj => obj.label.includes('Remaining'))[0].label = `Remaining KM:`
-        fields.filter(obj => obj.label.includes('Remaining'))[0].value = 0
-        fields.filter(obj => obj.label.includes('Errand'))[0].value = '55.00'
+        fld_rem.label = `Remaining KM:`
+        fld_rem.value = 0
+        fld_errand.value = errand_fee
+    }
+
+    if (fld_total && fld_stop) fld_total.value = (Number(fld_stop.value) + Number(computed_fee || errand_fee)).toFixed(1)
+
+    if (! fld_stop) {
+        let i_tot = fields.findIndex(o => o.label.includes('Total'))
+        fields.splice(i_tot, (i_tot > 0) ? 1 : 0)
     }
 
     generate_fields()
@@ -99,11 +105,13 @@ const calculate = () => {
 
 cb_nighttime.onclick = () => {
     if (event.currentTarget.checked) {
-        fields[0].value = night_fee
+        errand_fee = night_fee
         rem_fee = night_remfee
+        fields.filter(obj => obj.label.includes('First'))[0].value = errand_fee
     } else {
-        fields[0].value = day_fee
+        errand_fee = day_fee
         rem_fee = day_remfee
+        fields.filter(obj => obj.label.includes('First'))[0].value = errand_fee
     }
 
     calculate()
