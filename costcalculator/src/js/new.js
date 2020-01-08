@@ -16,7 +16,7 @@ const stop_fee = 20
 let stops = Number(tx_stop.value)
 
 /* main array */
-const fields = [
+let fields = [
     { label: 'First 3km:', value: day_fee },
     { label: 'Remaining KM:', value: 0 },
     { label: 'Errand Fee:', value: errand_fee },
@@ -31,15 +31,20 @@ const stopover = () => {
     else
         if (stops > 0) tx_stop.value = stops = stops - 1
 
+    /*
     fields.splice(
-        3,
-        (fields.filter( obj => obj.label.includes('Stop'))) ? 1 : 0,
-        { label: 'Stop Over:', value: (stops * stop_fee).toFixed(1) }
+        3, // go to index 3
+        (fields.filter( obj => obj.label.includes('Stop'))) ? 1 : 0, // delete 1 item
+        { label: 'Stop Over:', value: (stops * stop_fee).toFixed(1) } // before adding item
     )
+    */
 
-    if (fields.filter(obj => obj.label.includes('Total')).length === 0) fields.push({label: 'Total Delivery Cost:', value: 0})
+    if (! fields.filter(obj => obj.label.includes('Stop')).length)
+        fields.push({label: 'Stop Over', value: 0})
 
-    if (stops === 0) return fields.splice(3, 1) && calculate()
+    // if (stops === 0) return fields.splice(3, 1) && calculate()
+    if (stops === 0)
+        fields = fields.filter(obj => !obj.label.includes('Stop'))
 
     calculate()
 }
@@ -91,12 +96,20 @@ const calculate = () => {
         fld_errand.value = errand_fee
     }
 
-    if (fld_total && fld_stop) fld_total.value = (Number(fld_stop.value) + Number(computed_fee || errand_fee)).toFixed(1)
-
-    if (! fld_stop) {
-        let i_tot = fields.findIndex(o => o.label.includes('Total'))
-        fields.splice(i_tot, (i_tot > 0) ? 1 : 0)
+    // if stop is present
+    if (fld_stop) {
+        // compute value
+        fld_stop.value = (stops * stop_fee).toFixed(1)
+        // add 'Total' item & compute
+        if (! fields.filter(obj => obj.label.includes('Total')).length)
+            fields.push({label: 'Total Delivery Cost:', value: (Number(fld_stop.value) + Number(computed_fee || errand_fee)).toFixed(1)})
+        // just compute if already present
+        else if (fld_total)
+            fld_total.value = (Number(fld_stop.value) + Number(computed_fee || errand_fee)).toFixed(1)
     }
+
+    if (! fld_stop)
+        fields = fields.filter(obj => ! obj.label.includes('Total'))
 
     generate_fields()
 }
