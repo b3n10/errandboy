@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cost Calculator</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <input id="cb_nighttime" type="checkbox">
+            <label for="cb_nighttime">Night Time?</label>
+        </div>
+        <div class="row">
+            <input type="text" id="distance" placeholder="Distance in KM">
+        </div>
+        <div class="row stops">
+            Additional Stop Over:
+            <button id="stop_minus">-</button>
+            <input id="stop" type="text" value="0" disabled />
+            <button id="stop_plus">+</button>
+        </div>
+        <!--
+        <div class="row">
+            <button id="calculate">Calculate</button>
+        </div>
+        -->
+        <div class="row result">
+            <strong>First 3km:</strong>
+            <span id="span_cost"></span>
+            <br>
+            <strong id="remaining_distance">Remaining km: </strong>
+            <span id="remaining_cost">0</span>
+            <br>
+            <strong class="stop_text">Stop Over: </strong>
+            <span class="stop_text" id="stop_cost"></span>
+            <br class="stop_text">
+            <strong>Errand Fee:</strong>
+            <span id="errand_fee">0</span>
+        </div>
+        <div class="row">
+            <button class="btn_copy" id="btn_copy">Copy Result</button>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>
+<!--
+            <br>
+            <strong>Holiday Surcharge (50%):</strong>
+            <span id="holiday_surcharge">0</span>
+            <br>
+            <strong>Total Delivery Cost:</strong>
+            <span id="total_cost">0</span>
+-->
