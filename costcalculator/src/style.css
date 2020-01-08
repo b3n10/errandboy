@@ -85,6 +85,7 @@ button.bt_copy {
     border: none;
     border-radius: 15px;
     box-shadow: 0 3px #999;
+    font-size: 14px;
 }
 .row.stopover button:hover,
 button.bt_copy:hover {

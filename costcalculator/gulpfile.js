@@ -6,12 +6,12 @@ const cleanCSS = require('gulp-clean-css')
 const uglify = require('gulp-uglify')
 
 const transpile = (done) => {
-    src('src/**/*.js')
+    src('src/*.js')
         .pipe(babel())
         .on('error', (e) => {
             console.log(`Error: ${e.name}\nMessage: ${e.message}\nLine: ${e.loc.line} Col: ${e.loc.column}`) // handle error for babel
         })
-        .pipe(dest('dist'))
+        .pipe(dest('js'))
     done()
 }
 
@@ -69,9 +69,9 @@ const brel = (done) => {
 
 exports.mywatch = () => {
     brs()
-    watch('src/**/*.js', series(transpile, brel))
-    watch('**/*.html', brel)
-    watch('css/*.css', brel)
+    watch('src/*.js', series(transpile, brel))
+    watch('src/*.css', brel)
+    watch('src/*html', brel)
 }
 
 exports.default = () => {

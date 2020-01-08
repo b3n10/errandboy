@@ -130,6 +130,19 @@ var calculate = function calculate() {
   });
   generate_fields();
 };
+
+var copyText = function copyText() {
+  var preview = "".concat(tx_distance.value ? tx_distance.value + 'km' : 'within 3km', " distance\n\n");
+  fields.forEach(function (obj) {
+    return preview += "".concat(obj.label, " ").concat(obj.value, "\n");
+  });
+  var txtar = document.createElement("textarea");
+  document.getElementsByTagName("body")[0].append(txtar);
+  txtar.value = preview;
+  txtar.select();
+  document.execCommand("copy");
+  txtar.remove();
+};
 /* events */
 
 
@@ -172,19 +185,7 @@ cb_holiday.onclick = () => {
 bt_stopminus.onclick = stopover;
 bt_stopplus.onclick = stopover;
 tx_distance.addEventListener('input', calculate);
-
-bt_copy.onclick = function () {
-  var preview = '';
-  fields.forEach(function (obj) {
-    preview += "".concat(obj.label, " ").concat(obj.value, "\n");
-  });
-  var txtar = document.createElement("textarea");
-  document.getElementsByTagName("body")[0].append(txtar);
-  txtar.value = preview;
-  txtar.select();
-  document.execCommand("copy");
-  txtar.remove();
-};
+bt_copy.onclick = copyText;
 
 window.onload = function () {
   return generate_fields();
