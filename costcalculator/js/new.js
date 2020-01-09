@@ -1,8 +1,8 @@
 "use strict";
 
 /* dom elements */
-var cb_nighttime = document.getElementById('cb_nighttime'); // const cb_holiday = document.getElementById('cb_holiday')
-
+var cb_nighttime = document.getElementById('cb_nighttime');
+var cb_holiday = document.getElementById('cb_holiday');
 var tx_distance = document.getElementById('tx_distance');
 var tx_stop = document.getElementById('tx_stop');
 var bt_stopplus = document.getElementById('bt_stopplus');
@@ -33,6 +33,49 @@ var fields = [{
 }];
 /* functions */
 
+var nighttime = function nighttime() {
+  if (event.currentTarget.checked) {
+    fields.filter(function (obj) {
+      return obj.label.includes('First');
+    })[0].value = errand_fee = night_fee;
+    rem_fee = night_remfee;
+  } else {
+    fields.filter(function (obj) {
+      return obj.label.includes('First');
+    })[0].value = errand_fee = day_fee;
+    rem_fee = day_remfee;
+  }
+
+  calculate();
+};
+
+var holiday = function holiday() {
+  if (event.currentTarget.checked) {
+    fields.splice(3, 0, {
+      label: 'Holiday Surcharge (50%):',
+      value: 0
+    }); // append item on index 4
+
+    if (!fields.filter(function (obj) {
+      return obj.label.includes('Total');
+    }).length) fields.push({
+      label: 'Total Delivery Cost:',
+      value: 0
+    });
+  } else {
+    fields = fields.filter(function (obj) {
+      return !obj.label.includes('Holiday');
+    });
+    if (!fields.filter(function (obj) {
+      return obj.label.includes('Stop');
+    }).length) fields = fields.filter(function (obj) {
+      return !obj.label.includes('Total');
+    });
+  }
+
+  calculate();
+};
+
 var stopover = function stopover() {
   if (event.currentTarget === bt_stopplus) tx_stop.value = stops = stops + 1;else if (stops > 0) tx_stop.value = stops = stops - 1;
   /*
@@ -45,14 +88,29 @@ var stopover = function stopover() {
 
   if (!fields.filter(function (obj) {
     return obj.label.includes('Stop');
-  }).length) fields.push({
+  }).length) fields.splice(4, 0, {
     label: 'Stop Over',
+    value: 0
+  }); // append item on index 3
+
+  if (!fields.filter(function (obj) {
+    return obj.label.includes('Total');
+  }).length) fields.push({
+    label: 'Total Delivery Cost:',
     value: 0
   }); // if (stops === 0) return fields.splice(3, 1) && calculate()
 
-  if (stops === 0) fields = fields.filter(function (obj) {
-    return !obj.label.includes('Stop');
-  });
+  if (stops === 0) {
+    fields = fields.filter(function (obj) {
+      return !obj.label.includes('Stop');
+    });
+    if (!fields.filter(function (obj) {
+      return obj.label.includes('Holiday');
+    }).length) fields = fields.filter(function (obj) {
+      return !obj.label.includes('Total');
+    });
+  }
+
   calculate();
 };
 
@@ -92,9 +150,10 @@ var calculate = function calculate() {
       fld_stop = fields.filter(function (obj) {
     return obj.label.includes('Stop');
   })[0],
-      fld_total = fields.filter(function (obj) {
-    return obj.label.includes('Total');
-  })[0];
+      fld_holiday = fields.filter(function (obj) {
+    return obj.label.includes('Holiday');
+  })[0],
+      fld_total = '';
 
   if (dist > 3) {
     initial = Number(fld_first.value); // console.log(initial)
@@ -109,25 +168,18 @@ var calculate = function calculate() {
     fld_rem.label = "Remaining KM:";
     fld_rem.value = 0;
     fld_errand.value = errand_fee;
-  } // if stop is present
-
-
-  if (fld_stop) {
-    // compute value
-    fld_stop.value = (stops * stop_fee).toFixed(1); // add 'Total' item & compute
-
-    if (!fields.filter(function (obj) {
-      return obj.label.includes('Total');
-    }).length) fields.push({
-      label: 'Total Delivery Cost:',
-      value: (Number(fld_stop.value) + Number(computed_fee || errand_fee)).toFixed(1)
-    }); // just compute if already present
-    else if (fld_total) fld_total.value = (Number(fld_stop.value) + Number(computed_fee || errand_fee)).toFixed(1);
   }
 
-  if (!fld_stop) fields = fields.filter(function (obj) {
-    return !obj.label.includes('Total');
+  if (fld_stop) fld_stop.value = (stops * stop_fee).toFixed(1);
+  if (fld_holiday) fld_holiday.value = (Number(computed_fee || errand_fee).toFixed(1) * 0.5).toFixed(2);
+  var fs = fld_stop ? fld_stop.value : 0;
+  var fh = fld_holiday ? fld_holiday.value : 0;
+  var fe = computed_fee || errand_fee;
+  fld_total = fields.filter(function (obj) {
+    return obj.label.includes('Total');
   });
+  if (fld_total.length) fld_total[0].value = (Number(fs) + Number(fh) + Number(fe)).toFixed(2); // console.log(Number(fs), Number(fh), Number(fe))
+
   generate_fields();
 };
 
@@ -146,42 +198,8 @@ var copyText = function copyText() {
 /* events */
 
 
-cb_nighttime.onclick = function () {
-  if (event.currentTarget.checked) {
-    errand_fee = night_fee;
-    rem_fee = night_remfee;
-    fields.filter(function (obj) {
-      return obj.label.includes('First');
-    })[0].value = errand_fee;
-  } else {
-    errand_fee = day_fee;
-    rem_fee = day_remfee;
-    fields.filter(function (obj) {
-      return obj.label.includes('First');
-    })[0].value = errand_fee;
-  }
-
-  calculate();
-};
-/*
-cb_holiday.onclick = () => {
-    if (event.currentTarget.checked) {
-        fields.push({
-            label: 'Holiday Surcharge:',
-            value: 0
-        }, {
-            label: 'Total Delivery Cost',
-            value: 0
-        })
-    } else {
-        fields.pop(fields.find( obj => obj.label === 'Holiday Surcharge'))
-        fields.pop(fields.find( obj => obj.label === 'Total Delivery Cost'))
-    }
-    generate_fields()
-}
-*/
-
-
+cb_nighttime.onclick = nighttime;
+cb_holiday.onclick = holiday;
 bt_stopminus.onclick = stopover;
 bt_stopplus.onclick = stopover;
 tx_distance.addEventListener('input', calculate);

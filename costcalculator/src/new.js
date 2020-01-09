@@ -1,6 +1,6 @@
 /* dom elements */
 const cb_nighttime = document.getElementById('cb_nighttime')
-// const cb_holiday = document.getElementById('cb_holiday')
+const cb_holiday = document.getElementById('cb_holiday')
 const tx_distance = document.getElementById('tx_distance')
 const tx_stop = document.getElementById('tx_stop')
 const bt_stopplus = document.getElementById('bt_stopplus')
@@ -24,6 +24,31 @@ let fields = [
 
 
 /* functions */
+const nighttime = () => {
+    if (event.currentTarget.checked) {
+        fields.filter(obj => obj.label.includes('First'))[0].value = errand_fee = night_fee
+        rem_fee = night_remfee
+    } else {
+        fields.filter(obj => obj.label.includes('First'))[0].value = errand_fee = day_fee
+        rem_fee = day_remfee
+    }
+
+    calculate()
+}
+
+const holiday = () => {
+    if (event.currentTarget.checked) {
+        fields.splice(3, 0, {label: 'Holiday Surcharge (50%):', value: 0}) // append item on index 4
+        if (! fields.filter(obj => obj.label.includes('Total')).length)
+            fields.push({label: 'Total Delivery Cost:', value: 0})
+    } else {
+        fields = fields.filter(obj => !obj.label.includes('Holiday'))
+        if (! fields.filter(obj => obj.label.includes('Stop')).length)
+            fields = fields.filter(obj => !obj.label.includes('Total'))
+    }
+
+    calculate()
+}
 
 const stopover = () => {
     if (event.currentTarget === bt_stopplus)
@@ -40,11 +65,17 @@ const stopover = () => {
     */
 
     if (! fields.filter(obj => obj.label.includes('Stop')).length)
-        fields.push({label: 'Stop Over', value: 0})
+        fields.splice(4, 0, {label: 'Stop Over', value: 0}) // append item on index 3
+
+    if (! fields.filter(obj => obj.label.includes('Total')).length)
+        fields.push({label: 'Total Delivery Cost:', value: 0})
 
     // if (stops === 0) return fields.splice(3, 1) && calculate()
-    if (stops === 0)
+    if (stops === 0) {
         fields = fields.filter(obj => !obj.label.includes('Stop'))
+        if (! fields.filter(obj => obj.label.includes('Holiday')).length)
+            fields = fields.filter(obj => !obj.label.includes('Total'))
+    }
 
     calculate()
 }
@@ -76,7 +107,8 @@ const calculate = () => {
         fld_rem = fields.filter(obj => obj.label.includes('Remaining'))[0],
         fld_errand = fields.filter(obj => obj.label.includes('Errand'))[0],
         fld_stop = fields.filter(obj => obj.label.includes('Stop'))[0],
-        fld_total = fields.filter(obj => obj.label.includes('Total'))[0]
+        fld_holiday = fields.filter(obj => obj.label.includes('Holiday'))[0],
+        fld_total = ''
 
     if (dist > 3) {
         initial = Number(fld_first.value)
@@ -96,20 +128,21 @@ const calculate = () => {
         fld_errand.value = errand_fee
     }
 
-    // if stop is present
-    if (fld_stop) {
-        // compute value
+    if (fld_stop)
         fld_stop.value = (stops * stop_fee).toFixed(1)
-        // add 'Total' item & compute
-        if (! fields.filter(obj => obj.label.includes('Total')).length)
-            fields.push({label: 'Total Delivery Cost:', value: (Number(fld_stop.value) + Number(computed_fee || errand_fee)).toFixed(1)})
-        // just compute if already present
-        else if (fld_total)
-            fld_total.value = (Number(fld_stop.value) + Number(computed_fee || errand_fee)).toFixed(1)
-    }
 
-    if (! fld_stop)
-        fields = fields.filter(obj => ! obj.label.includes('Total'))
+    if (fld_holiday)
+        fld_holiday.value = (Number(computed_fee || errand_fee).toFixed(1) * 0.5).toFixed(2)
+
+    let fs = (fld_stop) ? fld_stop.value : 0
+    let fh = (fld_holiday) ? fld_holiday.value : 0
+    let fe = (computed_fee || errand_fee)
+
+    fld_total = fields.filter(obj => obj.label.includes('Total'))
+    if (fld_total.length)
+        fld_total[0].value = (Number(fs) + Number(fh) + Number(fe)).toFixed(2)
+
+    // console.log(Number(fs), Number(fh), Number(fe))
 
     generate_fields()
 }
@@ -129,37 +162,8 @@ const copyText = () => {
 
 /* events */
 
-cb_nighttime.onclick = () => {
-    if (event.currentTarget.checked) {
-        errand_fee = night_fee
-        rem_fee = night_remfee
-        fields.filter(obj => obj.label.includes('First'))[0].value = errand_fee
-    } else {
-        errand_fee = day_fee
-        rem_fee = day_remfee
-        fields.filter(obj => obj.label.includes('First'))[0].value = errand_fee
-    }
-
-    calculate()
-}
-
-/*
-cb_holiday.onclick = () => {
-    if (event.currentTarget.checked) {
-        fields.push({
-            label: 'Holiday Surcharge:',
-            value: 0
-        }, {
-            label: 'Total Delivery Cost',
-            value: 0
-        })
-    } else {
-        fields.pop(fields.find( obj => obj.label === 'Holiday Surcharge'))
-        fields.pop(fields.find( obj => obj.label === 'Total Delivery Cost'))
-    }
-    generate_fields()
-}
-*/
+cb_nighttime.onclick = nighttime
+cb_holiday.onclick = holiday
 
 bt_stopminus.onclick = stopover
 bt_stopplus.onclick = stopover
