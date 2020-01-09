@@ -74,10 +74,10 @@ exports.mywatch = () => {
     watch('src/*html', brel)
 }
 
-exports.default = () => {
-    console.log('nothing here..')
-}
-
+exports.default = () => console.log('nothing here..')
+exports.minifyCSS = minifyCSS
+exports.minifyJS = minifyJS
+exports.transpile = transpile
 exports.build = series(copyHTML, minifyCSS, minifyJS)
 /*
 if (process.env.NODE_ENV === 'production') {
