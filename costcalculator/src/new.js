@@ -7,6 +7,7 @@ const bt_stopplus = document.getElementById('bt_stopplus')
 const bt_stopminus = document.getElementById('bt_stopminus')
 const result = document.getElementsByClassName('result')[0]
 const bt_copy = document.getElementById('bt_copy')
+const bt_reset = document.getElementById('bt_reset')
 
 /* default values */
 const day_fee = '55.0', day_remfee = '15'
@@ -65,7 +66,7 @@ const stopover = () => {
     */
 
     if (! fields.filter(obj => obj.label.includes('Stop')).length)
-        fields.splice(4, 0, {label: 'Stop Over', value: 0}) // append item on index 3
+        fields.splice(4, 0, {label: 'Stop Over:', value: 0}) // append item on index 3
 
     if (! fields.filter(obj => obj.label.includes('Total')).length)
         fields.push({label: 'Total Delivery Cost:', value: 0})
@@ -160,6 +161,12 @@ const copyText = () => {
     txtar.remove();
 }
 
+const reset = () => {
+    tx_distance.value = ''
+    calculate()
+    tx_distance.focus()
+}
+
 /* events */
 
 cb_nighttime.onclick = nighttime
@@ -171,5 +178,6 @@ bt_stopplus.onclick = stopover
 tx_distance.addEventListener('input', calculate)
 
 bt_copy.onclick = copyText
+bt_reset.onclick = reset
 
 window.onload = () => generate_fields()

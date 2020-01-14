@@ -13,11 +13,13 @@
 .row {
     padding: 2px 0;
 }
+.row.input {
+    text-align: center;
+}
 .row input#tx_distance {
     text-align: right;
-    width: 250px;
+    width: 200px;
     margin: 0 auto;
-    display: block;
     font-size: 22px;
     padding: 6px;
     border: 1px solid #c1c1c1;
@@ -72,10 +74,10 @@ div.estimates label:last-child {
     text-align: right;
     width: 20%;
 }
+button.bt_reset,
 button.bt_copy {
-    display: block;
     padding: 5px;
-    width: 100%;
+    width: 49%;
     margin: 0 auto;
     text-align: center;
     cursor: pointer;
@@ -87,11 +89,13 @@ button.bt_copy {
     box-shadow: 0 3px #999;
     font-size: 14px;
 }
+button.bt_reset:hover,
 .row.stopover button:hover,
 button.bt_copy:hover {
     background-color: #c1c1c1;
     color: #fff;
 }
+button.bt_reset:active,
 .row.stopover button:active,
 button.bt_copy:active {
     background-color: #c1c1c1;

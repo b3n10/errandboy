@@ -9,6 +9,7 @@ var bt_stopplus = document.getElementById('bt_stopplus');
 var bt_stopminus = document.getElementById('bt_stopminus');
 var result = document.getElementsByClassName('result')[0];
 var bt_copy = document.getElementById('bt_copy');
+var bt_reset = document.getElementById('bt_reset');
 /* default values */
 
 var day_fee = '55.0',
@@ -89,7 +90,7 @@ var stopover = function stopover() {
   if (!fields.filter(function (obj) {
     return obj.label.includes('Stop');
   }).length) fields.splice(4, 0, {
-    label: 'Stop Over',
+    label: 'Stop Over:',
     value: 0
   }); // append item on index 3
 
@@ -195,6 +196,12 @@ var copyText = function copyText() {
   document.execCommand("copy");
   txtar.remove();
 };
+
+var reset = function reset() {
+  tx_distance.value = '';
+  calculate();
+  tx_distance.focus();
+};
 /* events */
 
 
@@ -204,6 +211,7 @@ bt_stopminus.onclick = stopover;
 bt_stopplus.onclick = stopover;
 tx_distance.addEventListener('input', calculate);
 bt_copy.onclick = copyText;
+bt_reset.onclick = reset;
 
 window.onload = function () {
   return generate_fields();
