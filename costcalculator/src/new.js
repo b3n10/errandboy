@@ -151,7 +151,7 @@ const calculate = () => {
 }
 
 const copyText = () => {
-    let preview = `${tx_distance.value ? tx_distance.value + 'km' : 'within 3km'} distance\n\n`
+    let preview = `${(tx_distance.value <= 3 || tx_distance.length === 0) ? 'within 3km' : tx_distance.value + 'km'} distance\n\n`
 
     fields.forEach( obj => preview += `${obj.label} ${obj.value}\n` )
 
@@ -164,9 +164,15 @@ const copyText = () => {
 }
 
 const reset = () => {
+    tx_stop.value = stops = 0
+
     tx_distance.value = ''
-    calculate()
     tx_distance.focus()
+
+    // remove stop over
+    fields = fields.filter(obj => !obj.label.includes('Stop'))
+
+    calculate()
 }
 
 /* events */

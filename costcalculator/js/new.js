@@ -186,7 +186,7 @@ var calculate = function calculate() {
 };
 
 var copyText = function copyText() {
-  var preview = "".concat(tx_distance.value ? tx_distance.value + 'km' : 'within 3km', " distance\n\n");
+  var preview = "".concat(tx_distance.value <= 3 || tx_distance.length === 0 ? 'within 3km' : tx_distance.value + 'km', " distance\n\n");
   fields.forEach(function (obj) {
     return preview += "".concat(obj.label, " ").concat(obj.value, "\n");
   });
@@ -199,9 +199,14 @@ var copyText = function copyText() {
 };
 
 var reset = function reset() {
+  tx_stop.value = stops = 0;
   tx_distance.value = '';
+  tx_distance.focus(); // remove stop over
+
+  fields = fields.filter(function (obj) {
+    return !obj.label.includes('Stop');
+  });
   calculate();
-  tx_distance.focus();
 };
 /* events */
 
