@@ -132,6 +132,7 @@ var generate_fields = function generate_fields() {
     new_div.append(second_label);
     result.append(new_div);
   });
+  tx_distance.focus();
 };
 
 var calculate = function calculate() {

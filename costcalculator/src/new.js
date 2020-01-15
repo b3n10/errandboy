@@ -99,6 +99,8 @@ const generate_fields = () => {
         new_div.append(second_label)
         result.append(new_div)
     })
+
+    tx_distance.focus()
 }
 
 const calculate = () => {
