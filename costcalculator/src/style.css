@@ -74,11 +74,10 @@ div.estimates label:last-child {
     text-align: right;
     width: 20%;
 }
-button.bt_reset,
-button.bt_copy {
+button.btn {
     padding: 5px;
     width: 49%;
-    margin: 0 auto;
+    margin: 5px auto;
     text-align: center;
     cursor: pointer;
     outline: 0;
@@ -89,16 +88,18 @@ button.bt_copy {
     box-shadow: 0 3px #999;
     font-size: 14px;
 }
-button.bt_reset:hover,
 .row.stopover button:hover,
-button.bt_copy:hover {
+button.btn:hover {
     background-color: #c1c1c1;
     color: #fff;
 }
-button.bt_reset:active,
 .row.stopover button:active,
-button.bt_copy:active {
+button.btn:active {
     background-color: #c1c1c1;
     box-shadow: 0 3px #666;
     transform: translateY(4px);
+}
+
+div.scripts {
+    padding-top: 10px;
 }

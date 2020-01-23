@@ -1,15 +1,26 @@
 "use strict";
 
-/* dom elements */
+/* checkbox */
 var cb_nighttime = document.getElementById('cb_nighttime');
 var cb_holiday = document.getElementById('cb_holiday');
+/* text input */
+
 var tx_distance = document.getElementById('tx_distance');
 var tx_stop = document.getElementById('tx_stop');
+var result = document.getElementsByClassName('result')[0];
+/* button */
+
 var bt_stopplus = document.getElementById('bt_stopplus');
 var bt_stopminus = document.getElementById('bt_stopminus');
-var result = document.getElementsByClassName('result')[0];
 var bt_copy = document.getElementById('bt_copy');
 var bt_reset = document.getElementById('bt_reset');
+var bt_welcome = document.getElementById('bt_welcome');
+var bt_food = document.getElementById('bt_food');
+var bt_pickup = document.getElementById('bt_pickup');
+var bt_bills = document.getElementById('bt_bills');
+var bt_grocery = document.getElementById('bt_grocery');
+var bt_addstore = document.getElementById('bt_addstore');
+var bt_waiting = document.getElementById('bt_waiting');
 /* default values */
 
 var day_fee = '55.0',
@@ -20,6 +31,7 @@ var errand_fee = day_fee,
     rem_fee = day_remfee;
 var stop_fee = 20;
 var stops = Number(tx_stop.value);
+var preview = '';
 /* main array */
 
 var fields = [{
@@ -56,13 +68,6 @@ var holiday = function holiday() {
       label: 'Holiday Surcharge (50%):',
       value: 0
     }); // append item on index 4
-
-    if (!fields.filter(function (obj) {
-      return obj.label.includes('Total');
-    }).length) fields.push({
-      label: 'Total Delivery Cost:',
-      value: 0
-    });
   } else {
     fields = fields.filter(function (obj) {
       return !obj.label.includes('Holiday');
@@ -170,8 +175,15 @@ var calculate = function calculate() {
     fld_rem.label = "Remaining KM:";
     fld_rem.value = 0;
     fld_errand.value = errand_fee;
-  }
+  } // if stop or holiday field is present, add total field if not yet added
 
+
+  if (!fields.filter(function (obj) {
+    return obj.label.includes('Total');
+  }).length && (fld_stop || fld_holiday)) fields.push({
+    label: 'Total Delivery Cost:',
+    value: 0
+  });
   if (fld_stop) fld_stop.value = (stops * stop_fee).toFixed(1);
   if (fld_holiday) fld_holiday.value = (Number(computed_fee || errand_fee).toFixed(1) * 0.5).toFixed(2);
   var fs = fld_stop ? fld_stop.value : 0;
@@ -182,14 +194,15 @@ var calculate = function calculate() {
   });
   if (fld_total.length) fld_total[0].value = (Number(fs) + Number(fh) + Number(fe)).toFixed(2); // console.log(Number(fs), Number(fh), Number(fe))
 
-  generate_fields();
-};
+  generate_fields(); // errand fee text
 
-var copyText = function copyText() {
-  var preview = "".concat(tx_distance.value <= 3 || tx_distance.length === 0 ? 'within 3km' : tx_distance.value + 'km', " distance\n\n");
+  preview = "".concat(tx_distance.value <= 3 || tx_distance.length === 0 ? 'within 3km' : tx_distance.value + 'km', " distance\n\n");
   fields.forEach(function (obj) {
     return preview += "".concat(obj.label, " ").concat(obj.value, "\n");
   });
+};
+
+var copyText = function copyText() {
   var txtar = document.createElement("textarea");
   document.getElementsByTagName("body")[0].append(txtar);
   txtar.value = preview;
@@ -201,12 +214,47 @@ var copyText = function copyText() {
 var reset = function reset() {
   tx_stop.value = stops = 0;
   tx_distance.value = '';
-  tx_distance.focus(); // remove stop over
+  tx_distance.focus(); // remove stop over && total cost
 
   fields = fields.filter(function (obj) {
-    return !obj.label.includes('Stop');
+    return !obj.label.includes('Stop') && !obj.label.includes('Total');
   });
   calculate();
+};
+
+var welcome = function welcome() {
+  preview = "We can assist you with any of the following:\n\u2714\uFE0F Food Delivery (any restaurant within Angeles City, Clark and Mabalacat)\n\u2714\uFE0F Item delivery\n\u2714\uFE0F Grocery (Purchase and Deliver)\n\u2714\uFE0F Mall (Purchase and Deliver)\n\u2714\uFE0F Pick up and Deliver\n\u2714\uFE0F Meet up and Deliver\n\u2714\uFE0F Bills / Payments\n\u2714\uFE0F Other General Errands\n\n*Note: We only charge for the delivery fee. No additional charges for the actual item/order.";
+  copyText();
+};
+
+var food = function food() {
+  preview = "For Food Delivery \u2014-\n\nCustomer Name:\nContact #:\nRestaurant/Food Store Name and Branch(location):\n\nOrder Details (pls provide an alternative if first option is not available):\n\nSpecial Request from Restaurant/Food Store:\n\nDelivery Address and nearest landmark:\n\n***Please expect wait time on food preparation or queue.";
+  copyText();
+};
+
+var pickup = function pickup() {
+  preview = "Pick up & Delivery \u2014-\n\nCustomer Name:\nCustomer Contact #:\nDelivery Address and nearest landmark:\n\nPickup/Meetup Location/Address:\n\nItems for Pickup and Approximate Weight (maximum 5kg):\n\nName of Person and Contact # on Pickup/Meetup location:";
+  copyText();
+};
+
+var bills = function bills() {
+  preview = "Bills/Payments\u2014-\n\nBiller Name/Company:\nAccount Holder Name:\nAccount Number:\nExact amount due for Payment:\n\n***After payment, we will send you a picture of the receipt as a proof. If you prefer to get the physical copy of the receipt, additional fee on delivery (per km delivery rate applies).\n\nPer bill processed is 55PHP";
+  copyText();
+};
+
+var grocery = function grocery() {
+  preview = "Grocery Errand\n- 55PHP for 5 to 7 items (or depends on the weight), more than that will be charged a minimal amount (depending on the items to be added).\n\n- Delivery rate is 55PHP for the first 3km. Succeeding per km is 15PHP. \uD83D\uDE0A\n\n- Maximum of 10kg in weight\n\n- Note: Total Errand fee is computed by\u2014-\nGrocery Errand Fee + Delivery Fee";
+  copyText();
+};
+
+var addstore = function addstore() {
+  preview = "If there will be another store for food order, additonal 20PHP will be added per store.";
+  copyText();
+};
+
+var waiting = function waiting() {
+  preview = "Minimum of 15mins for waiting time. Additional 20PHP will be added for more than 15mins.";
+  copyText();
 };
 /* events */
 
@@ -218,6 +266,13 @@ bt_stopplus.onclick = stopover;
 tx_distance.addEventListener('input', calculate);
 bt_copy.onclick = copyText;
 bt_reset.onclick = reset;
+bt_welcome.onclick = welcome;
+bt_food.onclick = food;
+bt_pickup.onclick = pickup;
+bt_bills.onclick = bills;
+bt_grocery.onclick = grocery;
+bt_addstore.onclick = addstore;
+bt_waiting.onclick = waiting;
 
 window.onload = function () {
   return generate_fields();

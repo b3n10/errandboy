@@ -1,13 +1,25 @@
-/* dom elements */
+/* checkbox */
 const cb_nighttime = document.getElementById('cb_nighttime')
 const cb_holiday = document.getElementById('cb_holiday')
+
+/* text input */
 const tx_distance = document.getElementById('tx_distance')
 const tx_stop = document.getElementById('tx_stop')
+const result = document.getElementsByClassName('result')[0]
+
+/* button */
 const bt_stopplus = document.getElementById('bt_stopplus')
 const bt_stopminus = document.getElementById('bt_stopminus')
-const result = document.getElementsByClassName('result')[0]
 const bt_copy = document.getElementById('bt_copy')
 const bt_reset = document.getElementById('bt_reset')
+const bt_welcome = document.getElementById('bt_welcome')
+const bt_food = document.getElementById('bt_food')
+const bt_pickup = document.getElementById('bt_pickup')
+const bt_bills = document.getElementById('bt_bills')
+const bt_grocery = document.getElementById('bt_grocery')
+const bt_addstore = document.getElementById('bt_addstore')
+const bt_waiting = document.getElementById('bt_waiting')
+
 
 /* default values */
 const day_fee = '55.0', day_remfee = '15'
@@ -15,6 +27,7 @@ const night_fee = '65.0', night_remfee = '20'
 let errand_fee = day_fee, rem_fee = day_remfee
 const stop_fee = 20
 let stops = Number(tx_stop.value)
+let preview = ''
 
 /* main array */
 let fields = [
@@ -40,8 +53,6 @@ const nighttime = () => {
 const holiday = () => {
     if (event.currentTarget.checked) {
         fields.splice(3, 0, {label: 'Holiday Surcharge (50%):', value: 0}) // append item on index 4
-        if (! fields.filter(obj => obj.label.includes('Total')).length)
-            fields.push({label: 'Total Delivery Cost:', value: 0})
     } else {
         fields = fields.filter(obj => !obj.label.includes('Holiday'))
         if (! fields.filter(obj => obj.label.includes('Stop')).length)
@@ -131,6 +142,10 @@ const calculate = () => {
         fld_errand.value = errand_fee
     }
 
+    // if stop or holiday field is present, add total field if not yet added
+    if (! fields.filter(obj => obj.label.includes('Total')).length && (fld_stop || fld_holiday))
+        fields.push({label: 'Total Delivery Cost:', value: 0})
+
     if (fld_stop)
         fld_stop.value = (stops * stop_fee).toFixed(1)
 
@@ -148,13 +163,13 @@ const calculate = () => {
     // console.log(Number(fs), Number(fh), Number(fe))
 
     generate_fields()
+
+    // errand fee text
+    preview = `${(tx_distance.value <= 3 || tx_distance.length === 0) ? 'within 3km' : tx_distance.value + 'km'} distance\n\n`
+    fields.forEach( obj => preview += `${obj.label} ${obj.value}\n` )
 }
 
 const copyText = () => {
-    let preview = `${(tx_distance.value <= 3 || tx_distance.length === 0) ? 'within 3km' : tx_distance.value + 'km'} distance\n\n`
-
-    fields.forEach( obj => preview += `${obj.label} ${obj.value}\n` )
-
     const txtar = document.createElement("textarea")
     document.getElementsByTagName("body")[0].append(txtar);
     txtar.value = preview
@@ -169,10 +184,99 @@ const reset = () => {
     tx_distance.value = ''
     tx_distance.focus()
 
-    // remove stop over
-    fields = fields.filter(obj => !obj.label.includes('Stop'))
+    // remove stop over && total cost
+    fields = fields.filter(obj => !obj.label.includes('Stop') && !obj.label.includes('Total'))
 
     calculate()
+}
+
+const welcome = () => {
+    preview = `We can assist you with any of the following:
+✔️ Food Delivery (any restaurant within Angeles City, Clark and Mabalacat)
+✔️ Item delivery
+✔️ Grocery (Purchase and Deliver)
+✔️ Mall (Purchase and Deliver)
+✔️ Pick up and Deliver
+✔️ Meet up and Deliver
+✔️ Bills / Payments
+✔️ Other General Errands
+
+*Note: We only charge for the delivery fee. No additional charges for the actual item/order.`
+
+    copyText()
+}
+
+const food = () => {
+    preview = `For Food Delivery —-
+
+Customer Name:
+Contact #:
+Restaurant/Food Store Name and Branch(location):
+
+Order Details (pls provide an alternative if first option is not available):
+
+Special Request from Restaurant/Food Store:
+
+Delivery Address and nearest landmark:
+
+***Please expect wait time on food preparation or queue.`
+
+    copyText()
+}
+
+const pickup = () => {
+    preview = `Pick up & Delivery —-
+
+Customer Name:
+Customer Contact #:
+Delivery Address and nearest landmark:
+
+Pickup/Meetup Location/Address:
+
+Items for Pickup and Approximate Weight (maximum 5kg):
+
+Name of Person and Contact # on Pickup/Meetup location:`
+
+    copyText()
+}
+
+const bills = () => {
+    preview = `Bills/Payments—-
+
+Biller Name/Company:
+Account Holder Name:
+Account Number:
+Exact amount due for Payment:
+
+***After payment, we will send you a picture of the receipt as a proof. If you prefer to get the physical copy of the receipt, additional fee on delivery (per km delivery rate applies).
+
+Per bill processed is 55PHP`
+
+    copyText()
+}
+
+const grocery = () => {
+    preview = `Grocery Errand
+- 55PHP for 5 to 7 items (or depends on the weight), more than that will be charged a minimal amount (depending on the items to be added).
+
+- Delivery rate is 55PHP for the first 3km. Succeeding per km is 15PHP. 😊
+
+- Maximum of 10kg in weight
+
+- Note: Total Errand fee is computed by—-
+Grocery Errand Fee + Delivery Fee`
+
+    copyText()
+}
+
+const addstore = () => {
+    preview = `If there will be another store for food order, additonal 20PHP will be added per store.`
+    copyText()
+}
+
+const waiting = () => {
+    preview = `Minimum of 15mins for waiting time. Additional 20PHP will be added for more than 15mins.`
+    copyText()
 }
 
 /* events */
@@ -187,5 +291,12 @@ tx_distance.addEventListener('input', calculate)
 
 bt_copy.onclick = copyText
 bt_reset.onclick = reset
+bt_welcome.onclick = welcome
+bt_food.onclick = food
+bt_pickup.onclick = pickup
+bt_bills.onclick = bills
+bt_grocery.onclick = grocery
+bt_addstore.onclick = addstore
+bt_waiting.onclick = waiting
 
 window.onload = () => generate_fields()
