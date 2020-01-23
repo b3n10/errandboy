@@ -14,7 +14,7 @@ var bt_stopplus = document.getElementById('bt_stopplus');
 var bt_stopminus = document.getElementById('bt_stopminus');
 var bt_copy = document.getElementById('bt_copy');
 var bt_reset = document.getElementById('bt_reset');
-var bt_welcome = document.getElementById('bt_welcome');
+var bt_intro = document.getElementById('bt_intro');
 var bt_food = document.getElementById('bt_food');
 var bt_pickup = document.getElementById('bt_pickup');
 var bt_bills = document.getElementById('bt_bills');
@@ -222,7 +222,7 @@ var reset = function reset() {
   calculate();
 };
 
-var welcome = function welcome() {
+var intro = function intro() {
   preview = "We can assist you with any of the following:\n\u2714\uFE0F Food Delivery (any restaurant within Angeles City, Clark and Mabalacat)\n\u2714\uFE0F Item delivery\n\u2714\uFE0F Grocery (Purchase and Deliver)\n\u2714\uFE0F Mall (Purchase and Deliver)\n\u2714\uFE0F Pick up and Deliver\n\u2714\uFE0F Meet up and Deliver\n\u2714\uFE0F Bills / Payments\n\u2714\uFE0F Other General Errands\n\n*Note: We only charge for the delivery fee. No additional charges for the actual item/order.";
   copyText();
 };
@@ -266,7 +266,7 @@ bt_stopplus.onclick = stopover;
 tx_distance.addEventListener('input', calculate);
 bt_copy.onclick = copyText;
 bt_reset.onclick = reset;
-bt_welcome.onclick = welcome;
+bt_intro.onclick = intro;
 bt_food.onclick = food;
 bt_pickup.onclick = pickup;
 bt_bills.onclick = bills;

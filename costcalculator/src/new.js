@@ -12,7 +12,7 @@ const bt_stopplus = document.getElementById('bt_stopplus')
 const bt_stopminus = document.getElementById('bt_stopminus')
 const bt_copy = document.getElementById('bt_copy')
 const bt_reset = document.getElementById('bt_reset')
-const bt_welcome = document.getElementById('bt_welcome')
+const bt_intro = document.getElementById('bt_intro')
 const bt_food = document.getElementById('bt_food')
 const bt_pickup = document.getElementById('bt_pickup')
 const bt_bills = document.getElementById('bt_bills')
@@ -190,7 +190,7 @@ const reset = () => {
     calculate()
 }
 
-const welcome = () => {
+const intro = () => {
     preview = `We can assist you with any of the following:
 ✔️ Food Delivery (any restaurant within Angeles City, Clark and Mabalacat)
 ✔️ Item delivery
@@ -291,7 +291,7 @@ tx_distance.addEventListener('input', calculate)
 
 bt_copy.onclick = copyText
 bt_reset.onclick = reset
-bt_welcome.onclick = welcome
+bt_intro.onclick = intro
 bt_food.onclick = food
 bt_pickup.onclick = pickup
 bt_bills.onclick = bills
