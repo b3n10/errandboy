@@ -21,6 +21,7 @@ var bt_bills = document.getElementById('bt_bills');
 var bt_grocery = document.getElementById('bt_grocery');
 var bt_addstore = document.getElementById('bt_addstore');
 var bt_waiting = document.getElementById('bt_waiting');
+var bt_mabalacat = document.getElementById('bt_mabalacat');
 /* default values */
 
 var day_fee = '55.0',
@@ -248,12 +249,17 @@ var grocery = function grocery() {
 };
 
 var addstore = function addstore() {
-  preview = "If there will be another store for food order, additonal 20PHP will be added per store.";
+  preview = "There will be 20PHP per additional store on same errand.";
   copyText();
 };
 
 var waiting = function waiting() {
   preview = "Minimum of 15mins for waiting time. Additional 20PHP will be added for more than 15mins.";
+  copyText();
+};
+
+var mabalacat = function mabalacat() {
+  preview = "For Mabalacat area, our base rate starts from Dau Terminal.";
   copyText();
 };
 /* events */
@@ -273,6 +279,7 @@ bt_bills.onclick = bills;
 bt_grocery.onclick = grocery;
 bt_addstore.onclick = addstore;
 bt_waiting.onclick = waiting;
+bt_mabalacat.onclick = mabalacat;
 
 window.onload = function () {
   return generate_fields();
