@@ -195,12 +195,16 @@ var calculate = function calculate() {
   });
   if (fld_total.length) fld_total[0].value = (Number(fs) + Number(fh) + Number(fe)).toFixed(2); // console.log(Number(fs), Number(fh), Number(fe))
 
-  generate_fields(); // errand fee text
+  generate_fields();
+};
 
+var fees = function fees() {
+  // errand fee text
   preview = "".concat(tx_distance.value <= 3 || tx_distance.length === 0 ? 'within 3km' : tx_distance.value + 'km', " distance\n\n");
   fields.forEach(function (obj) {
     return preview += "".concat(obj.label, " ").concat(obj.value, "\n");
   });
+  copyText();
 };
 
 var copyText = function copyText() {
@@ -213,14 +217,14 @@ var copyText = function copyText() {
 };
 
 var reset = function reset() {
-  tx_stop.value = stops = 0;
-  tx_distance.value = '';
-  tx_distance.focus(); // remove stop over && total cost
+  tx_stop.value = stops = 0; // remove stop over && total cost
 
   fields = fields.filter(function (obj) {
     return !obj.label.includes('Stop') && !obj.label.includes('Total');
   });
   calculate();
+  tx_distance.value = '';
+  tx_distance.focus();
 };
 
 var intro = function intro() {
@@ -254,7 +258,7 @@ var addstore = function addstore() {
 };
 
 var waiting = function waiting() {
-  preview = "Minimum of 15mins for waiting time. Additional 20PHP will be added for more than 15mins.";
+  preview = "Reminder:\nAdditional 20PHP will be added for more than 15mins waiting time on food preparation.";
   copyText();
 };
 
@@ -270,7 +274,7 @@ cb_holiday.onclick = holiday;
 bt_stopminus.onclick = stopover;
 bt_stopplus.onclick = stopover;
 tx_distance.addEventListener('input', calculate);
-bt_copy.onclick = copyText;
+bt_copy.onclick = fees;
 bt_reset.onclick = reset;
 bt_intro.onclick = intro;
 bt_food.onclick = food;

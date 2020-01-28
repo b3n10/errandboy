@@ -164,10 +164,14 @@ const calculate = () => {
     // console.log(Number(fs), Number(fh), Number(fe))
 
     generate_fields()
+}
 
+const fees = () => {
     // errand fee text
     preview = `${(tx_distance.value <= 3 || tx_distance.length === 0) ? 'within 3km' : tx_distance.value + 'km'} distance\n\n`
     fields.forEach( obj => preview += `${obj.label} ${obj.value}\n` )
+
+    copyText()
 }
 
 const copyText = () => {
@@ -182,13 +186,13 @@ const copyText = () => {
 const reset = () => {
     tx_stop.value = stops = 0
 
-    tx_distance.value = ''
-    tx_distance.focus()
-
     // remove stop over && total cost
     fields = fields.filter(obj => !obj.label.includes('Stop') && !obj.label.includes('Total'))
 
     calculate()
+
+    tx_distance.value = ''
+    tx_distance.focus()
 }
 
 const intro = () => {
@@ -276,7 +280,7 @@ const addstore = () => {
 }
 
 const waiting = () => {
-    preview = `Minimum of 15mins for waiting time. Additional 20PHP will be added for more than 15mins.`
+    preview = `Reminder:\nAdditional 20PHP will be added for more than 15mins waiting time on food preparation.`
     copyText()
 }
 
@@ -295,7 +299,7 @@ bt_stopplus.onclick = stopover
 
 tx_distance.addEventListener('input', calculate)
 
-bt_copy.onclick = copyText
+bt_copy.onclick = fees
 bt_reset.onclick = reset
 bt_intro.onclick = intro
 bt_food.onclick = food
