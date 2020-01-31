@@ -185,13 +185,13 @@ const copyText = () => {
 
 const reset = () => {
     tx_stop.value = stops = 0
+    tx_distance.value = ''
 
     // remove stop over && total cost
     fields = fields.filter(obj => !obj.label.includes('Stop') && !obj.label.includes('Total'))
 
     calculate()
 
-    tx_distance.value = ''
     tx_distance.focus()
 }
 
