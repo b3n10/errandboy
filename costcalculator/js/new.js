@@ -39,7 +39,7 @@ var fields = [{
   label: 'First 3km:',
   value: day_fee
 }, {
-  label: 'Remaining KM:',
+  label: 'Remaining:',
   value: 0
 }, {
   label: 'Errand Fee:',
@@ -166,7 +166,7 @@ var calculate = function calculate() {
   if (dist > 3) {
     initial = Number(fld_first.value); // console.log(initial)
 
-    fld_rem.label = "Remaining KM (".concat((dist - 3).toFixed(1), "x").concat(rem_fee, "):");
+    fld_rem.label = "Remaining ".concat((dist - 3).toFixed(1), "km x ").concat(rem_fee, ":");
     rem_cost = parseFloat((dist - 3) * Number(rem_fee)).toFixed(1);
     fld_rem.value = rem_cost; // console.log(rem_cost)
 

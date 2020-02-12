@@ -33,7 +33,7 @@ let preview = ''
 /* main array */
 let fields = [
     { label: 'First 3km:', value: day_fee },
-    { label: 'Remaining KM:', value: 0 },
+    { label: 'Remaining:', value: 0 },
     { label: 'Errand Fee:', value: errand_fee },
 ]
 
@@ -129,7 +129,7 @@ const calculate = () => {
         initial = Number(fld_first.value)
         // console.log(initial)
 
-        fld_rem.label = `Remaining KM (${(dist - 3).toFixed(1)}x${rem_fee}):`
+        fld_rem.label = `Remaining ${(dist - 3).toFixed(1)}km x ${rem_fee}:`
         rem_cost = parseFloat((dist - 3) * Number(rem_fee)).toFixed(1)
         fld_rem.value = rem_cost
         // console.log(rem_cost)
