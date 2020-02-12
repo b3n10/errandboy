@@ -119,7 +119,7 @@ const calculate = () => {
     const dist = Number(tx_distance.value)
     let initial = 0, rem_cost = 0, computed_fee
     let fld_first = fields.filter(obj => obj.label.includes('First'))[0],
-        fld_rem = fields.filter(obj => obj.label.includes('Remaining'))[0],
+        fld_rem = fields.filter(obj => obj.label.includes('Remaining KM'))[0],
         fld_errand = fields.filter(obj => obj.label.includes('Errand'))[0],
         fld_stop = fields.filter(obj => obj.label.includes('Stop'))[0],
         fld_holiday = fields.filter(obj => obj.label.includes('Holiday'))[0],

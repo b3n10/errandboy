@@ -150,7 +150,7 @@ var calculate = function calculate() {
     return obj.label.includes('First');
   })[0],
       fld_rem = fields.filter(function (obj) {
-    return obj.label.includes('Remaining');
+    return obj.label.includes('Remaining KM');
   })[0],
       fld_errand = fields.filter(function (obj) {
     return obj.label.includes('Errand');
