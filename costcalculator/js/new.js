@@ -39,7 +39,7 @@ var fields = [{
   label: 'First 3km:',
   value: day_fee
 }, {
-  label: 'Remaining:',
+  label: 'Remaining KM:',
   value: 0
 }, {
   label: 'Errand Fee:',
@@ -150,7 +150,7 @@ var calculate = function calculate() {
     return obj.label.includes('First');
   })[0],
       fld_rem = fields.filter(function (obj) {
-    return obj.label.includes('Remaining KM');
+    return obj.label.includes('Remaining');
   })[0],
       fld_errand = fields.filter(function (obj) {
     return obj.label.includes('Errand');
